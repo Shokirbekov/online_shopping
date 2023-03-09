@@ -1,7 +1,8 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class MyUser(models.Model):
-    username = models.CharField(max_length=500, blank=True)
+    username = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     f_name = models.CharField(max_length=500, blank=True)
     l_name = models.CharField(max_length=500, blank=True)
     email = models.CharField(max_length=500, blank=True)

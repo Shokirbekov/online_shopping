@@ -40,19 +40,19 @@
 
 <div class="rating-wrap my-3">
 	<ul class="rating-stars">
-		<li style="width:80%" class="stars-active"> 
-			<i class="fa fa-star"></i> <i class="fa fa-star"></i> 
-			<i class="fa fa-star"></i> <i class="fa fa-star"></i> 
-			<i class="fa fa-star"></i> 
-		</li>
-		<li>
-			<i class="fa fa-star"></i> <i class="fa fa-star"></i> 
-			<i class="fa fa-star"></i> <i class="fa fa-star"></i> 
-			<i class="fa fa-star"></i> 
-		</li>
-	</ul>
-	<small class="label-rating text-muted">132 reviews</small>
-	<small class="label-rating text-success"> <i class="fa fa-clipboard-check"></i> 154 orders </small>
+    <li style="width:{{yulduz}}%" class="stars-active">
+      <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+      <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+      <i class="fa fa-star"></i>
+    </li>
+    <li>
+      <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+      <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+      <i class="fa fa-star"></i>
+    </li>
+  </ul>
+	<small class="label-rating text-muted">{{koment_amount}} reviews</small>
+	<small class="label-rating text-success"> <i class="fa fa-clipboard-check"></i>  orders </small>
 </div> <!-- rating-wrap.// -->
 
 <div class="mb-3"> 
@@ -71,9 +71,6 @@ consequat </p>
   <dt class="col-sm-3">Manufacturer</dt>
   <dd class="col-sm-9"><a href="#">{{mahsulot.brend}}</a></dd>
 
-  <dt class="col-sm-3">Article number</dt>
-  <dd class="col-sm-9">596 065</dd>
-
   <dt class="col-sm-3">Guarantee</dt>
   <dd class="col-sm-9">{{mahsulot.kafolat}}</dd>
 
@@ -82,9 +79,9 @@ consequat </p>
 
   <dt class="col-sm-3">Availabilty</dt>
   {%if mahsulot.mavjud%}
-    <dd class="col-sm-9">Hozir Bor</dd>
+    <dd class="col-sm-9">In Stock</dd>
     {%else%}
-    <dd class="col-sm-9">Tugadi!</dd>
+    <dd class="col-sm-9">Out of Stock</dd>
     {%endif%}
 </dl>
 
@@ -123,56 +120,90 @@ consequat </p>
 
 <!-- ========================= SECTION  ========================= -->
 <section class="section-name padding-y bg">
-<div class="container">
-
+<div class="container d-flex justify-content-center align-items-center">
 <form method="post"> {%csrf_token%}
   <div class="form-group">
-    <label for="exampleInputEmail1">Your vote(numbers only)</label>
-    <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Vote from 1 to 5" name="vote">
+    <label for="smileyRating">Your rating</label>
+    <div class="rating-container d-flex" id="smileyRating" style="gap: 20px;">
+      <input type="radio" name="rating" value="1" id="smiley1" style="display: none;">
+      <label class="smiley-face" for="smiley1" style="cursor: pointer">&#9785;</label>
+      <input type="radio" name="rating" value="2" id="smiley2" style="display: none">
+      <label class="smiley-face" for="smiley2" style="cursor: pointer">&#x1F610;</label>
+      <input type="radio" name="rating" value="3" id="smiley3" style="display: none">
+      <label class="smiley-face" for="smiley3" style="cursor: pointer">&#x1F642;</label>
+      <input type="radio" name="rating" value="4" id="smiley4" style="display: none;">
+      <label class="smiley-face" for="smiley4" style="cursor: pointer">&#x1F600;</label>
+      <input type="radio" name="rating" value="5" id="smiley5" style="display: none;">
+      <label class="smiley-face" for="smiley5" style="cursor: pointer">&#x1F929;</label>
+    </div>
   </div>
-    <br>
   <div class="form-group">
-    <label for="exampleFormControlTextarea1">Your comment</label>
-    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="comment"></textarea>
+    <label for="exampleInputComment1">Your comment</label>
+    <input type="text" class="form-control" id="exampleInputComment1" aria-describedby="commentHelp" placeholder="Enter your comment" name="comment">
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-    <br><br>
-    <h1 class="text-center">Votes for this product</h1>
-    <br>
-    <hr>
-    <br>
 
-    {%if koment%}
-    {%for i in koment%}
-    <div class="card mb-4">
-        <div class="d-flex flex-column">
-              <div class="d-flex flex-row align-items-center">
-                {%if i.username == request.user%}
-                  <h4 class="" style="opacity: .8; margin-top: 25px; margin-bottom: -20px; margin-left: 20px">You</h4>
-                  {%else%}
-                  <h4 class="" style="opacity: .8; margin-top: 25px; margin-bottom: -20px; margin-left: 20px">{{i.username}}</h4>
-                  {%endif%}
-              </div>
-            <br>
-          <div class="card-body d-flex flex-lg-row justify-content-between flex-sm-column">
-            <p>{{i.text}}</p>
+<div id="selectedRating"></div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    var fatherDiv = document.getElementById('smileyRating')
+    var smileyFaces = fatherDiv.querySelectorAll('.smiley-face');
+
+    smileyFaces.forEach((face) => {
+      face.addEventListener('click', () => {
+        // reset transform of all smiley faces
+        smileyFaces.forEach((face) => {
+          face.style.transform = "none"; // add !important if necessary
+        });
+        // scale up the clicked smiley face
+        face.style.transform = "scale(2)"; // add !important if necessary
+      });
+    });
+  });
+</script>
+
+</div>
 
 
-              <div class="d-flex flex-row align-items-center" style="margin-bottom: 20px;">
-                <p class="medium mb-0">Vote:</p>
-                <i class="fa fa-star mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
-                <p class="medium">{{i.baho}}</p>
-              </div>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h2 class="text-center mb-4">Reviews</h2>
+      <hr>
+      {% for izoh in koment %}
+        <div class="row">
+          <div class="col-sm-2">
+            <div class="text-center">
+              {% if izoh.baho == 1 %}
+                <span class="smiley-face">&#9785;</span>
+              {% elif izoh.baho == 2 %}
+                <span class="smiley-face">&#x1F610;</span>
+              {% elif izoh.baho == 3 %}
+                <span class="smiley-face">&#x1F642;</span>
+              {% elif izoh.baho == 4 %}
+                <span class="smiley-face">&#x1F600;</span>
+              {% elif izoh.baho == 5 %}
+                <span class="smiley-face">&#x1F929;</span>
+              {% endif %}
+            </div>
+          </div>
+          <div class="col-sm-10">
+            <p>{{ izoh.text }}</p>
+            <div class="user d-flex" style="gap: 300px">
+                <p><small class="text-muted">{{ izoh.sana }}</small></p>
+                <p><small class="text-muted">{{ izoh.username.f_name }} {{ izoh.username.l_name }}</small></p>
             </div>
           </div>
         </div>
-    {%endfor%}
-    {%else%}
-    <span></span>
-    {%endif%}
-
-</div> <!-- container .//  -->
+        <hr>
+      {% empty %}
+        <p>No reviews yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
 

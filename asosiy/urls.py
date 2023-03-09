@@ -6,4 +6,5 @@ urlpatterns = [
     path('bolimlar/', BolimlarView.as_view()),
     path('bolim/<int:id>/', BittaBolimView.as_view()),
     path('mahsulot/<int:id>/', BittaMahsulotView.as_view()),
+    path('profile/<int:id>/', ProfileView.as_view()),
 ]

@@ -1,8 +1,17 @@
+from django.db.models import Sum, Avg
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from .models import *
+from userapp.models import *
+
+class HomeView(View):
+    def get(self, request):
+        data = {
+            "user": MyUser.objects.get(username=request.user)
+        }
+        return render(request, 'header.html', data)
 
 class HomeView(View):
     def get(self, request):
@@ -38,18 +47,36 @@ class BittaBolimView(View):
 
 class BittaMahsulotView(View):
     def get(self, request, id):
+        izohlar = Komment.objects.filter(mahsulot__id=id)
+        orta = izohlar.aggregate(Avg('baho')).get('baho__avg')
+        if orta:
+            orta *= 20
+        else:
+            orta=0
         data = {
             "mahsulot": Mahsulot.objects.get(id=id),
             "rasm": Media.objects.filter(mahsulot__id=id),
-            "koment": Komment.objects.filter(mahsulot__id=id)
+            "koment": Komment.objects.filter(mahsulot__id=id),
+            "koment_amount": Komment.objects.filter(mahsulot__id=id).count(),
+            "yulduz": orta
         }
         return render(request, 'page-detail-product.html', data)
-
     def post(self, request, id):
         Komment.objects.create(
-            username=request.user,
+            username=MyUser.objects.get(username=request.user),
             text=request.POST.get('comment'),
-            baho=request.POST.get('vote'),
+            baho=request.POST.get('rating'),
             mahsulot=Mahsulot.objects.get(id=id),
         )
         return redirect(f'/asosiy/mahsulot/{id}/')
+
+class ProfileView(View):
+    def get(self, request, id):
+        user = MyUser.objects.get(username=request.user)
+
+        if request.user.id == id:
+            data = {
+                "user": user
+            }
+            return render(request, 'page-profile-main.html', data)
+        return redirect('/asosiy/')

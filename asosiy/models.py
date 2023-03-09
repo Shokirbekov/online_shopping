@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from userapp.models import *
 
 class Bolim(models.Model):
     nom = models.CharField(max_length=500)
@@ -29,7 +30,8 @@ class Media(models.Model):
         return self.mahsulot.nom
 
 class Komment(models.Model):
-    username = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    username = models.ForeignKey(MyUser, null=True, on_delete=models.SET_NULL)
     text = models.CharField(max_length=1000)
     baho = models.PositiveSmallIntegerField()
     mahsulot = models.ForeignKey(Mahsulot, on_delete=models.CASCADE, blank=True, null=True)
+    sana = models.DateTimeField(auto_now_add=True, blank=True, null=True)
