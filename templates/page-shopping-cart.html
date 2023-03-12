@@ -20,12 +20,15 @@
 </tr>
 </thead>
 <tbody>
+	{%for i in savat%}
 <tr>
 	<td>
-		<figure class="itemside">
-			<div class="aside"><img src="{{i.rasm.url}}" class="img-sm"></div>
+		<figure class="itemside" style="display: flex;">
+			<div class="aside">
+				<img src="{{i.mahsulot.media_set.first.rasm.url}}" class="img-sm w-100 mr-20">
+			</div>
 			<figcaption class="info">
-				<a href="#" class="title text-dark">Mahsulot nomi</a>
+				<a href="/asosiy/mahsulot/{{i.id}}/" class="title text-dark">{{i.mahsulot.nom}}</a>
 				<p class="text-muted small">Size: XL, Color: blue, <br> Brand: {{savat.mahsulot.detal.brend}}</p>
 			</figcaption>
 		</figure>
@@ -33,31 +36,41 @@
 	<td> 
 		<div class="input-group mb-3 input-spinner">
         <div class="input-group-prepend">
-			<a href="/savat_q/{{savat.id}}/"><button class="btn btn-light" type="button" id="button-plus"> + </button></a>
+			<a href="/buyurtma/savat_q/{{i.id}}/"><button class="btn btn-light" type="button" id="button-plus"> + </button></a>
         </div>
-        <input type="text" class="form-control" value="3">
+        <input type="text" class="form-control" value="{{i.soni}}">
         <div class="input-group-append">
-			<a href="/savat_k/{{savat.id}}/"><button class="btn btn-light" type="button" id="button-minus"> &minus; </button></a>
+			<a href="/buyurtma/savat_k/{{i.id}}/"><button class="btn btn-light" type="button" id="button-minus"> &minus; </button></a>
         </div>
         </div>
 	</td>
 	<td> 
 		<div class="price-wrap"> 
-			<var class="price">$69</var>
-			<small  class="text-muted"> $23 each </small>
+			{%if i.soni == 1%}
+			<var class="price mt-2">${{i.mahsulot.narx}}</var>
+			{%else%}
+			<var class="price">${{i.umumiy}}</var>
+			<small  class="text-muted"> ${{i.mahsulot.narx}} each </small>
+			{%endif%}
 		</div> <!-- price-wrap .// -->
 	</td>
-	<td class="text-right"> 
-	<a data-original-title="Save to Wishlist" title="" href="/tanlangan_qosh/{{savat.id}}/" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a>
-	<a href="/ochirish/{{savat.id}}/" class="btn btn-light btn-round"> Remove</a>
+	<td class="text-right">
+		{%if i.wished%}
+		<a data-original-title="Remove from Wishlist" title="" href="/buyurtma/tanlangan_ochirish/{{i.id}}/" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart" style="color:red;"></i></a>
+		{%else%}
+		<a data-original-title="Save to Wishlist" title="" href="/buyurtma/tanlangan_qoshish/{{i.id}}/" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a>
+		{%endif%}
+	<a href="/buyurtma/ochirish/{{i.id}}/" class="btn btn-light btn-round"> Remove</a>
 	</td>
 </tr>
+{%endfor%}
 </tbody>
 </table>
 
-<div class="card-body border-top">
+<div class="card-body border-top d-flex justify-content-between">
 	<a href="/buyurtma_qosh/" class="btn btn-primary float-md-right"> Make Purchase <i class="fa fa-chevron-right"></i> </a>
-	<a href="#" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Continue shopping </a>
+	<a href="/buyurtma/wishlist/" class="btn btn-danger float-md-right"> Go to Wishlist <i class="fa fa-heart"></i> </a>
+	<a href="/asosiy/bolimlar/" class="btn btn-info"> <i class="fa fa-chevron-left"></i> Continue shopping </a>
 </div>	
 </div> <!-- card.// -->
 
@@ -86,7 +99,7 @@
 			<div class="card-body">
 					<dl class="dlist-align">
 					  <dt>Total price:</dt>
-					  <dd class="text-right">USD {{sum}}</dd>
+					  <dd class="text-right">USD {{summa}}.0</dd>
 					</dl>
 					<dl class="dlist-align">
 					  <dt>Discount:</dt>
