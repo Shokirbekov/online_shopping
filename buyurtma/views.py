@@ -32,7 +32,11 @@ class TanlanganView(View):
         return render(request, 'page-profile-wishlist.html')
 class BuyurtmaView(View):
     def get(self, request):
-        return render(request, 'page-profile-orders.html')
+
+        data = {
+            "buyurtma": Buyurtma.objects.filter(user__username=request.user)
+        }
+        return render(request, 'page-profile-orders.html', data)
 
 class QoshView(View):
     def get(self, request, id):
@@ -74,7 +78,7 @@ class QoshishView(View):
 
 class TanlanganQoshishView(View):
     def get(self, request, id):
-        savat = Savat.objects.get(id=id)
+        savat = Mahsulot.objects.get(id=id)
         Wishes.objects.create(
             mahsulot=savat,
             user=MyUser.objects.get(username=request.user)
@@ -85,7 +89,7 @@ class TanlanganQoshishView(View):
 
 class TanlanganDeleteView(View):
     def get(self, request, id):
-        savat = Savat.objects.get(id=id)
+        savat = Mahsulot.objects.get(id=id)
         to_be_deleted = Wishes.objects.get(mahsulot__id=id)
         if to_be_deleted.user.username == request.user:
             savat.wished = False
@@ -104,7 +108,7 @@ class WishlistView(View):
 
 class WishDeleteView(View):
     def get(self, request, id):
-        savat = Savat.objects.get(id=id)
+        savat = Savat.objects.get(mahsulot__id=id)
         to_be_deleted = Wishes.objects.get(mahsulot__id=id)
         if to_be_deleted.user.username == request.user:
             savat.wished = False

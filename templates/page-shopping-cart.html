@@ -55,10 +55,10 @@
 		</div> <!-- price-wrap .// -->
 	</td>
 	<td class="text-right">
-		{%if i.wished%}
-		<a data-original-title="Remove from Wishlist" title="" href="/buyurtma/tanlangan_ochirish/{{i.id}}/" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart" style="color:red;"></i></a>
+		{%if i.mahsulot.wished%}
+		<a data-original-title="Remove from Wishlist" title="" href="/buyurtma/tanlangan_ochirish/{{i.mahsulot.id}}/" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart" style="color:red;"></i></a>
 		{%else%}
-		<a data-original-title="Save to Wishlist" title="" href="/buyurtma/tanlangan_qoshish/{{i.id}}/" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a>
+		<a data-original-title="Save to Wishlist" title="" href="/buyurtma/tanlangan_qoshish/{{i.mahsulot.id}}/" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a>
 		{%endif%}
 	<a href="/buyurtma/ochirish/{{i.id}}/" class="btn btn-light btn-round"> Remove</a>
 	</td>

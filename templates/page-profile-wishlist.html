@@ -32,14 +32,14 @@
 			<div class="card-body">
 
 		<div class="row">
-			{%if wishes%}
+			{%if wishes is not Null or wishes%}
 			{%for i in wishes%}
 				<div class="col-md-6">
 					<figure class="itemside mb-4">
-						<div class="aside"><img src="{{i.mahsulot.mahsulot.media_set.first.rasm.url}}" class="border img-md" style="width: 200px;"></div>
+						<div class="aside"><img src="{{i.mahsulot.media_set.first.rasm.url}}" class="border img-md" style="width: 200px;"></div>
 						<figcaption class="info">
-							<a href="#" class="title">{{i.mahsulot.mahsulot.nom}}</a>
-							<p class="price mb-2">${{i.mahsulot.mahsulot.narx}}</p>
+							<a href="#" class="title">{{i.mahsulot.nom}}</a>
+							<p class="price mb-2">${{i.mahsulot.narx}}</p>
 							<a href="#" class="btn btn-secondary btn-sm"> Add to cart </a>
 							<a href="/buyurtma/wish_ochirish/{{i.mahsulot.id}}/" class="btn btn-danger btn-sm" data-toggle="tooltip" title="" data-original-title="Remove from wishlist"> <i class="fa fa-times"></i> </a>
 						</figcaption>

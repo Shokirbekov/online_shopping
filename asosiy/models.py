@@ -20,6 +20,7 @@ class Mahsulot(models.Model):
     yetkazish = models.CharField(max_length=500, default='3-4 kun')
     mavjud = models.BooleanField(default=True)
     chegirma = models.PositiveIntegerField(default=0)
+    wished = models.BooleanField(default=False)
     def __str__(self):
         return f"{self.nom}, {self.brend}"
 
